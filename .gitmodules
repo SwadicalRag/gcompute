@@ -1,0 +1,3 @@
+[submodule "lua/galileo"]
+	path = lua/galileo
+	url = https://github.com/lua-extended/galileo/
