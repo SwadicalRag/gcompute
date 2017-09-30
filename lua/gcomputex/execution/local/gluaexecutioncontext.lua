@@ -4,6 +4,8 @@ GCompute.Execution.GLuaExecutionContext = GCompute.MakeConstructor (self, GCompu
 function self:ctor (ownerId, contextOptions)
 	local globalEnvironment = debug.getfenv (function () end)
 	self.Environment = globalEnvironment
+
+	self.galileoProject = galileo.GalileoProject:__new()
 	
 	if self:IsEasyContext () then
 		self.Environment = {}

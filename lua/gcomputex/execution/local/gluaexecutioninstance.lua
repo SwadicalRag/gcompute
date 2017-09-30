@@ -10,6 +10,8 @@ GCompute.Execution.GLuaExecutionInstance = GCompute.MakeConstructor (self, GComp
 ]]
 
 function self:ctor (gluaExecutionContext, instanceOptions)
+	self.LuaExecutionContext = gluaExecutionContext
+
 	self.UpvalueDetours = {}
 	self.UpvalueBackup = {}
 	self.LuaCompiler = GCompute.GLua.LuaCompiler ()

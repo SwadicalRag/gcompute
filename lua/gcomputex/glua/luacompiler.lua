@@ -1,7 +1,8 @@
 local self = {}
 GCompute.GLua.LuaCompiler = GCompute.MakeConstructor (self)
 
-function self:ctor ()
+function self:ctor (luaExecutionInstance)
+	self.LuaExecutionInstance = luaExecutionInstance
 	self.Upvalues = {}
 	self.UpvalueHeader = nil
 end
@@ -23,6 +24,8 @@ function self:GetUpvalueEnumerator ()
 end
 
 function self:Compile (code, sourceId)
+	-- TODO: override this
+
 	local fullCode = self:GetUpvalueHeader () .. " return function () " .. code .. "\nend"
 	
 	local functionFactory = CompileString (fullCode, sourceId, false)
