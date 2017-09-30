@@ -84,7 +84,7 @@ function self:PrintMultiline (printer, coloredTextSink, obj, printingOptions, al
 
 			local bc = proj:ProcessBytecodeDump(string.dump(obj))
 
-			if bc.suc then
+			if bc.success then
 				code = (proj.reconstructor:Construct(bc.ast))
 			else
 				code = "[decompiler error: "..tostring(bc.err).."]"
