@@ -1,3 +1,9 @@
 [submodule "lua/galileo"]
 	path = lua/galileo
 	url = https://github.com/lua-extended/galileo/
+[submodule "lua/__modules/bitbuf"]
+	path = lua/__modules/bitbuf
+	url = https://github.com/lua-extended/bitbuf/
+[submodule "lua/__modules/bitconverter"]
+	path = lua/__modules/bitconverter
+	url = https://github.com/lua-extended/bitconverter/
