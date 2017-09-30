@@ -23,11 +23,15 @@ function self:GetUpvalueEnumerator ()
 	return GLib.KeyValueEnumerator (self.Upvalues)
 end
 
+function self:GetFullCode (code)
+	return self:GetUpvalueHeader () .. " return function () " .. code .. "\nend"
+end
+
 function self:Compile (code, sourceId)
 	-- TODO: override this
 
-	local fullCode = self:GetUpvalueHeader () .. " return function () " .. code .. "\nend"
-	
+	local fullCode = self:GetFullCode (code)
+		
 	local functionFactory = CompileString (fullCode, sourceId, false)
 	
 	if type (functionFactory) == "string" then

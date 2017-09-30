@@ -61,7 +61,7 @@ function self:dtor ()
 end
 
 -- IExecutionContext
-function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback)
+function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback, breakpoints)
 	if callback then GLib.CallSelfAsSync () return end
 	
 	DebugPrint ("AggregateExecutionContext:CreateExecutionInstance")

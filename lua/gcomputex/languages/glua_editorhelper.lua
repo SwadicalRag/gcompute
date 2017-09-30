@@ -85,7 +85,13 @@ function self:Run (codeEditor, compilerStdOut, compilerStdErr, stdOut, stdErr)
 		end
 		
 		-- Execution instance
-		local executionInstance, returnCode = executionContext:CreateExecutionInstance (code, nil, GCompute.Execution.ExecutionInstanceOptions.EasyContext + GCompute.Execution.ExecutionInstanceOptions.ExecuteImmediately + GCompute.Execution.ExecutionInstanceOptions.CaptureOutput)
+		local executionInstance, returnCode = executionContext:CreateExecutionInstance (
+			code, 
+			nil, 
+			GCompute.Execution.ExecutionInstanceOptions.EasyContext + GCompute.Execution.ExecutionInstanceOptions.ExecuteImmediately + GCompute.Execution.ExecutionInstanceOptions.CaptureOutput,
+			nil, -- no callback
+			codeEditor.ActiveBreakpoints or {}
+		)
 		if executionInstance then
 			executionInstance:GetCompilerStdOut ():ChainTo (compilerStdOut)
 			executionInstance:GetCompilerStdErr ():ChainTo (compilerStdErr)
@@ -199,9 +205,11 @@ function self:ProcessEPOELine (lineData)
 end
 
 function self:ValidateCode (code, sourceId, stdOut, stdErr)
-	local f = CompileString (code, sourceId, false)
-	if type (f) == "string" then
-		stdErr:WriteLine (f)
+	local proj = galileo.GalileoProject:__new()
+	local data = proj:ProcessFile(sourceId,code)
+
+	if not data.success then
+		stdErr:WriteLine (proj:ConvertAllCompilerErrorsToString())
 		return false
 	end
 	

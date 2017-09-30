@@ -92,6 +92,7 @@ function self:HandleExecutionInstanceCreationRequest0 (connection, inBuffer)
 	
 	-- Create the execution instance
 	local executionInstance, returnCode = self.ExecutionContext:CreateExecutionInstance (code, sourceId, instanceOptions)
+	-- TODO: breakpoints ^^^
 	if executionInstance then
 		returnCode = GCompute.ReturnCode.Success
 	else

@@ -82,26 +82,62 @@ function self:ctor (gluaExecutionContext, instanceOptions)
 end
 
 -- Control
+function self:CompileInternal (code, ident, breakpoints)
+	local proj = galileo.GalileoProject:__new()
+	local data = proj:ProcessFile(ident,code)
+
+	if data.success then
+		return function(...)
+			local triggeredBreakpoints = {}
+
+			local __G = {}
+			proj:SetGlobalTable(__G)
+			proj:ExposeMetatableToGlobalTable()
+
+			setmetatable(__G.debug,{
+				__index = self:GetExecutionContext():GetEnvironment().debug,
+				__newindex = self:GetExecutionContext():GetEnvironment().debug,
+			})
+
+			setmetatable(__G,{
+				__index = self:GetExecutionContext():GetEnvironment(),
+				__newindex = self:GetExecutionContext():GetEnvironment()
+			})
+
+			function proj:PreNodeExecute(node)
+				local line = node.start.line
+
+				if breakpoints[line] then
+					if not triggeredBreakpoints[line] then
+						triggeredBreakpoints[line] = true
+						print("TRIGGER BREAKPOINT",line)
+					end
+				end
+			end
+
+			return proj:ExecuteStatementASTNode(data.ast,...)
+		end
+	else
+		return false,proj:ConvertAllCompilerErrorsToString()
+	end
+end
+
 function self:Compile ()
 	if self:IsCompiling () then return end
 	if self:IsCompiled  () then return end
-	
+
 	self:SetState (GCompute.Execution.ExecutionInstanceState.Compiling)
 	
 	if self:GetExecutionContext ():IsReplContext () then
-		self.ExecutionFunction = self.LuaCompiler:Compile ("return " .. self.SourceFiles [1], self.SourceIds [1])
+		self.ExecutionFunction = self:CompileInternal ("return " .. self.SourceFiles [1], self.SourceIds [1], self.SourceBreakpoints [1])
 	end
 	
 	if not self.ExecutionFunction then
-		local f, compilerError = self.LuaCompiler:Compile (self.SourceFiles [1], self.SourceIds [1])
+		local f, compilerError = self:CompileInternal (self.SourceFiles [1], self.SourceIds [1], self.SourceBreakpoints [1])
 		self.ExecutionFunction = f
 		if compilerError then
 			self:GetCompilerStdErr ():Write (compilerError)
 		end
-	end
-	
-	if self.ExecutionFunction then
-		debug.setfenv (self.ExecutionFunction, self:GetExecutionContext ():GetEnvironment ())
 	end
 	
 	self:SetState (GCompute.Execution.ExecutionInstanceState.Compiled)
@@ -136,6 +172,8 @@ function self:Start ()
 			self:UndetourPrintingFunctions ()
 		end
 	)
+
+	self:GetCompilerStdOut ():Write ("execute\n")
 	
 	self:DetourPrintingFunctions ()
 	

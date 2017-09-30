@@ -46,7 +46,7 @@ function self:CanCreateExecutionInstance (code, sourceId, instanceOptions)
 	return true
 end
 
-function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback)
+function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback, breakpoints)
 	if callback then GLib.CallSelfAsSync () return end
 	
 	if self:IsDisposed () then return nil, GCompute.ReturnCode.NoCarrier end
@@ -66,6 +66,7 @@ function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback
 	outBuffer:UInt32 (instanceOptions)
 	outBuffer:StringN16 (sourceId or "")
 	outBuffer:StringN32 (util.Compress (code) or "")
+	-- TODO: breakpoints
 	
 	-- Dispatch request
 	self:DispatchPacket (self:GetRemoteId (), outBuffer)

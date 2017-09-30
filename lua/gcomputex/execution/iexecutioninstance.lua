@@ -83,7 +83,7 @@ function self:IsTerminated ()
 end
 
 -- Compilation
-function self:AddSourceFile (code, sourceId)
+function self:AddSourceFile (code, sourceId, breakpoints)
 	GCompute.Error ("IExecutionInstance:AddSourceFile : Not implemented.")
 end
 

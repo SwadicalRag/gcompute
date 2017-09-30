@@ -31,7 +31,7 @@ function self:CanCreateExecutionInstance (code, sourceId, instanceOptions)
 	return true
 end
 
-function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback)
+function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback, breakpoints)
 	if callback then GLib.CallSelfAsSync () return end
 	
 	-- Check if creation is allowed
@@ -46,7 +46,7 @@ function self:CreateExecutionInstance (code, sourceId, instanceOptions, callback
 		sourceId = "@repl_" .. self:AllocateInstanceId ()
 	end
 	
-	executionInstance:AddSourceFile (code, sourceId)
+	executionInstance:AddSourceFile (code, sourceId, breakpoints)
 	
 	-- ExecutionInstanceCreated event
 	self:DispatchEvent ("ExecutionInstanceCreated", executionInstance)

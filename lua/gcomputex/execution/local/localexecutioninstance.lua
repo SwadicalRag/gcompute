@@ -26,6 +26,7 @@ function self:ctor (executionContext, instanceOptions)
 	self.SourceFileCount = 0
 	self.SourceFiles = {}
 	self.SourceIds   = {}
+	self.SourceBreakpoints = {}
 	
 	GCompute.EventProvider (self)
 end
@@ -82,7 +83,7 @@ function self:SetState (state)
 end
 
 -- Compilation
-function self:AddSourceFile (code, sourceId)
+function self:AddSourceFile (code, sourceId, breakpoints)
 	if not code then return end
 	
 	if not sourceId then
@@ -93,6 +94,7 @@ function self:AddSourceFile (code, sourceId)
 	self.SourceFileCount = self.SourceFileCount + 1
 	self.SourceFiles [self.SourceFileCount] = code
 	self.SourceIds   [self.SourceFileCount] = sourceId
+	self.SourceBreakpoints[self.SourceFileCount] = breakpoints or {}
 end
 
 function self:GetSourceFileEnumerator ()
