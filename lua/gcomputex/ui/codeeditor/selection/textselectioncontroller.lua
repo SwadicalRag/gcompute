@@ -25,14 +25,16 @@ function self:ctor (codeEditor, textSelection)
 			if mouseCode == MOUSE_LEFT then
 				local clickedOnLineNumbers = self.Editor:AreLineNumbersVisible () and x <= self.Editor.Settings.LineNumberWidth
 				if clickedOnLineNumbers then
-					self:CopyInitialSelection ()
-					self:ConvertToRegularSelection (lineColumnLocation:GetLine ())
+					-- self:CopyInitialSelection ()
+					-- self:ConvertToRegularSelection (lineColumnLocation:GetLine ())
 					
-					self.Selection:SetSelectionMode (GCompute.CodeEditor.SelectionMode.Regular)
-					self:SelectLine (lineColumnLocation:GetLine (), shift)
-					self.Editor:SetRawCaretPos (self.Selection:GetSelectionEnd ())
+					-- self.Selection:SetSelectionMode (GCompute.CodeEditor.SelectionMode.Regular)
+					-- self:SelectLine (lineColumnLocation:GetLine (), shift)
+					-- self.Editor:SetRawCaretPos (self.Selection:GetSelectionEnd ())
 					
-					self.InLineSelection = true
+					-- self.InLineSelection = true
+
+					self.Editor.ActiveBreakpoints[lineColumnLocation:GetLine() + 1] = not self.Editor.ActiveBreakpoints[lineColumnLocation:GetLine() + 1]
 				else
 					if SysTime () - self.LastDoubleLeftMouseDownTime < 0.4 then
 						self:ConvertToRegularSelection (lineColumnLocation:GetLine ())

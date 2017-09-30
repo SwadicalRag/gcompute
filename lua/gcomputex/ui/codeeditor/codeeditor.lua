@@ -61,6 +61,8 @@ end
 
 function PANEL:Init ()
 	self:SetActionMap (GCompute.CodeEditor.ActionMap)
+
+	self.ActiveBreakpoints = {} -- [line number] => boolean
 	
 	-- Controls
 	self.TextEntry = vgui.Create ("DTextEntry", self)
@@ -567,7 +569,20 @@ function PANEL:Paint (w, h)
 		surface.SetDrawColor (GLib.Colors.Gray)
 		surface.DrawRect (0, 0, self.Settings.LineNumberWidth, self:GetTall ())
 		for i = 0, math.min (self.ViewLineCount, self.Document:GetLineCount () - self.ViewLocation:GetLine () - 1) do
-			draw.SimpleText (tostring (self.ViewLocation:GetLine () + i + 1), "GComputeMonospace", self.Settings.LineNumberWidth - 16, i * self.Settings.LineHeight + 0.5 * (self.Settings.LineHeight - self.Settings.FontHeight), GLib.Colors.White, TEXT_ALIGN_RIGHT)
+			local lineNum = self.ViewLocation:GetLine () + i + 1
+
+			if self.ActiveBreakpoints[lineNum] then
+				surface.SetDrawColor (GLib.Colors.Tomato)
+				surface.DrawRect(
+					0,
+					i * self.Settings.LineHeight,
+					self.Settings.LineNumberWidth,
+					self.Settings.LineHeight
+				)
+				surface.SetDrawColor (GLib.Colors.Gray)
+			end
+
+			draw.SimpleText (tostring (lineNum), "GComputeMonospace", self.Settings.LineNumberWidth - 16, i * self.Settings.LineHeight + 0.5 * (self.Settings.LineHeight - self.Settings.FontHeight), GLib.Colors.White, TEXT_ALIGN_RIGHT)
 		end
 	end
 	
