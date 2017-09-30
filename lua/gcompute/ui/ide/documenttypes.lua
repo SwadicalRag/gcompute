@@ -30,4 +30,4 @@ end
 
 GCompute.IDE.DocumentTypes = GCompute.IDE.DocumentTypes ()
 
-GCompute.IncludeDirectory ("gcompute/ui/ide/documents")
+GCompute.IncludeDirectory ("gcomputex/ui/ide/documents")

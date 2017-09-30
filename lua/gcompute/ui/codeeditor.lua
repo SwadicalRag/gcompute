@@ -38,11 +38,11 @@ include ("codeeditor/codecompletion/suggestiontype.lua")
 
 -- Keyboard Shortcuts
 GCompute.CodeEditor.KeyboardMap = Gooey.KeyboardMap ()
-GCompute.IncludeDirectory ("gcompute/ui/codeeditor/keyboardmap")
+GCompute.IncludeDirectory ("gcomputex/ui/codeeditor/keyboardmap")
 
 -- Actions
 GCompute.CodeEditor.ActionMap = Gooey.ActionMap ()
-GCompute.IncludeDirectory ("gcompute/ui/codeeditor/actions")
+GCompute.IncludeDirectory ("gcomputex/ui/codeeditor/actions")
 
 -- Undo / Redo
 include ("codeeditor/undoredo/blockdeletionaction.lua")

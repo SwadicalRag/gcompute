@@ -400,7 +400,7 @@ GCompute.ExecutionLogger = GCompute.Execution.ExecutionLogger ()
 GCompute.ExecutionLogger:AddExecutionFilterable (GCompute.Execution.ExecutionFilterable)
 GCompute.ExecutionLogger:AddOutputTextSink (GCompute.Text.ConsoleTextSink)
 
-GCompute.AddReloadCommand ("gcompute/gcompute.lua", "gcompute", "GCompute")
+GCompute.AddReloadCommand ("gcomputex/gcompute.lua", "gcompute", "GCompute")
 
 GCompute.PlayerMonitor = GCompute.PlayerMonitor ("GCompute")
 
@@ -417,7 +417,7 @@ GCompute.GlobalNamespace:SetGlobalNamespace (GCompute.GlobalNamespace)
 GCompute.GlobalNamespace:SetNamespaceType (GCompute.NamespaceType.Global)
 
 include ("corelibrary.lua")
-GCompute.IncludeDirectory ("gcompute/libraries", true)
+GCompute.IncludeDirectory ("gcomputex/libraries", true)
 GCompute.GlobalNamespace:ResolveNames (
 	GCompute.ObjectResolver (
 		GCompute.NamespaceSet ()
@@ -426,5 +426,5 @@ GCompute.GlobalNamespace:ResolveNames (
 )
 
 if CLIENT then
-	GCompute.IncludeDirectory ("gcompute/ui")
+	GCompute.IncludeDirectory ("gcomputex/ui")
 end
