@@ -79,7 +79,17 @@ function self:PrintMultiline (printer, coloredTextSink, obj, printingOptions, al
 			end
 		end
 		
-		code = code or GLib.Lua.BytecodeReader (obj):ToString ()
+		if not code then
+			local proj = galileo.GalileoProject:__new()
+
+			local bc = proj:ProcessBytecodeDump(string.dump(obj))
+
+			if bc.suc then
+				code = (proj.reconstructor:Construct(bc.ast))
+			else
+				code = "[decompiler error: "..tostring(bc.err).."]"
+			end
+		end
 		
 		-- Output syntax highlighted code
 		outputWidth = outputWidth + GCompute.Languages.Get ("GLua"):Lex (code):Print (coloredTextSink, printer)
