@@ -1,7 +1,7 @@
 local __rtl = include("__rtl.lua")
 debug.getregistry().__rtl = __rtl
 
-galileo = __rtl.package.require ("../galileo/lua/init")
+galileo = __rtl.package.require ("../galileo/lua/project")
 
 if SERVER or
    file.Exists ("gcomputex/gcompute.lua", "LUA") or
