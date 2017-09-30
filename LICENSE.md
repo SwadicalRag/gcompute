@@ -4,4 +4,6 @@ This repository is a proprietary fork (with the permission of @notcake) of the g
 
 All new code and modifications are `copyright (c) swadical 2017`
 
+You may not use this repo and/or the code inside it for anything without the explicit consent of me (swadical).
+
 ![meme](https://i.imgur.com/8CXOQ94.png)
