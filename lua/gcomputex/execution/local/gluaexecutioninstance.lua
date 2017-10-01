@@ -88,8 +88,6 @@ function self:CompileInternal (code, ident, breakpoints)
 
 	if data.success then
 		return function(...)
-			local triggeredBreakpoints = {}
-
 			local __G = {}
 			proj:SetGlobalTable(__G)
 			proj:ExposeMetatableToGlobalTable()
@@ -104,18 +102,22 @@ function self:CompileInternal (code, ident, breakpoints)
 				__newindex = self:GetExecutionContext():GetEnvironment()
 			})
 
+			local lastline = 0
 			function proj:PreNodeExecute(node)
 				local line = node.start.line
 
 				if breakpoints[line] then
-					if not triggeredBreakpoints[line] then
-						triggeredBreakpoints[line] = true
+					if lastline ~= line then
 						print("TRIGGER BREAKPOINT",line)
 					end
 				end
+
+				lastline = line
 			end
 
-			return proj:ExecuteStatementASTNode(data.ast,...)
+			return coroutine.wrap(function(...)
+				return proj:ExecuteStatementASTNode(data.ast,...)
+			end)(...)
 		end
 	else
 		return false,proj:ConvertAllCompilerErrorsToString()
